@@ -9,7 +9,7 @@
             return _items.ToList();
         }
 
-        public T GetById(int id)
+        public T? GetById(int id)
         {
             return _items.Single(item => item.Id == id);
         }

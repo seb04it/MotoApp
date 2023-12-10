@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotoApp.Entities;
-using System.Collections.Generic;
 
 namespace MotoApp.Repositories
 {
@@ -8,12 +7,16 @@ namespace MotoApp.Repositories
     {
         private readonly DbSet<T> _dbset;
         private readonly DbContext _dbContext;
+        private readonly Action<T>? _itemAddedCallback;
 
-        public SqlRepository(DbContext dbContext)
+        public SqlRepository(DbContext dbContext, Action<T>? itemAddedCallback = null)
         {
             _dbContext = dbContext;
             _dbset = _dbContext.Set<T>();
+            _itemAddedCallback = itemAddedCallback;
         }
+
+        public event EventHandler<T>? ItemAdded;
 
         public IEnumerable<T> GetAll()
         {
@@ -27,6 +30,8 @@ namespace MotoApp.Repositories
         public void Add(T item)
         {
             _dbset.Add(item);
+            _itemAddedCallback?.Invoke(item);
+            ItemAdded?.Invoke(this, item);
         }
 
         public void Remove(T item)
