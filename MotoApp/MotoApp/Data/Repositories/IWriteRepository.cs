@@ -1,11 +1,11 @@
-﻿using MotoApp.Entities;
+﻿using MotoApp.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MotoApp.Repositories
+namespace MotoApp.Data.Repositories
 {
     public interface IWriteRepository<in T> where T : class, IEntity
     {

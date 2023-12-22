@@ -5,7 +5,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MotoApp.Entities
+namespace MotoApp.Data.Entities
 {
     public abstract class EntityBase : IEntity
     {

@@ -1,11 +1,11 @@
-﻿using MotoApp.DataProviders.Extensions;
-using MotoApp.Entities;
-using MotoApp.Repositories;
+﻿using MotoApp.Components.DataProviders.Extensions;
+using MotoApp.Data.Entities;
+using MotoApp.Data.Repositories;
 using System;
 using System.Drawing;
 using System.Text;
 
-namespace MotoApp.DataProviders
+namespace MotoApp.Components.DataProviders
 {
     public class CarsProvider : ICarsProvider
     {
@@ -45,7 +45,7 @@ namespace MotoApp.DataProviders
         public List<string> DistinctAllColors()
         {
             var cars = _carsRepository.GetAll();
-            return cars.Select(x => x.Color).Distinct().OrderBy(c=>c).ToList();
+            return cars.Select(x => x.Color).Distinct().OrderBy(c => c).ToList();
         }
 
         public List<Car> DistinctByColors()
@@ -70,7 +70,7 @@ namespace MotoApp.DataProviders
         {
             var cars = _carsRepository.GetAll();
             return cars.FirstOrDefault(x => x.Color == color,
-                new Car { Id = -1, Name = "NOT FOUND"});
+                new Car { Id = -1, Name = "NOT FOUND" });
         }
 
         public decimal GetMinimumPriceOfAllCars()
@@ -175,7 +175,7 @@ namespace MotoApp.DataProviders
         public List<Car> TakeCarsWhileNameStartsWith(string prefix)
         {
             var cars = _carsRepository.GetAll();
-            return cars.OrderBy(x => x.Name).TakeWhile(x=>x.Name.StartsWith(prefix)).ToList();
+            return cars.OrderBy(x => x.Name).TakeWhile(x => x.Name.StartsWith(prefix)).ToList();
         }
 
         public List<Car> WhereColorIs(string color)
@@ -196,6 +196,6 @@ namespace MotoApp.DataProviders
             return cars.Where(x => x.Name.StartsWith(prefix) && x.StandardCost > cost).ToList();
         }
 
-        
+
     }
 }

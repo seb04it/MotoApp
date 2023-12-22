@@ -1,7 +1,7 @@
-﻿using MotoApp.Entities;
+﻿using MotoApp.Data.Entities;
 using System.Data.Common;
 
-namespace MotoApp.DataProviders
+namespace MotoApp.Components.DataProviders
 {
     public interface ICarsProvider
     {

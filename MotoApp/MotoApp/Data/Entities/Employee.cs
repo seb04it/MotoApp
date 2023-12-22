@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata.Ecma335;
 
-namespace MotoApp.Entities
+namespace MotoApp.Data.Entities
 {
     public class Employee : EntityBase
     {

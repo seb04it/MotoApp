@@ -1,215 +1,211 @@
-﻿using MotoApp.DataProviders;
-using MotoApp.Entities;
-using MotoApp.Repositories;
-using System.Security.Cryptography.X509Certificates;
+﻿using MotoApp.Components.CsvReader;
+using MotoApp.Data.Entities;
+using System.Xml.Linq;
 
 namespace MotoApp
 {
     public class App : IApp
     {
-        private readonly IRepository<Employee> _employeeRepository;
-        private readonly IRepository<Car> _carsRepository;
-        private readonly ICarsProvider _carsProvider;
+        private readonly ICsvReader _csvReader;
 
-        public App(IRepository<Employee> employeeRepository, IRepository<Car> carsRepository, ICarsProvider carsProvider)
+        public App(ICsvReader csvReader)
         {
-            _employeeRepository = employeeRepository;
-            _carsRepository = carsRepository;
-            _carsProvider = carsProvider;
+            _csvReader = csvReader;
         }
 
         public void Run()
         {
-            Console.WriteLine("I'm here in Run() method");
+            CreateXml();
+            QueryXml();
 
-            // adding
-            var employees = new[]
+            //var groups = manufacturers.GroupJoin(
+            //    cars,
+            //    manufacturer => manufacturer.Name,
+            //    car => car.Manufacturer,
+            //    (m, c) =>
+            //    new
+            //    {
+            //        Manufacturer = m,
+            //        Cars = c
+            //    })
+            //    .OrderBy(x => x.Manufacturer.Name);
+
+            //foreach(var group in groups)
+            //{
+            //    Console.WriteLine($"Manufacturer: {group.Manufacturer.Name}");
+            //    Console.WriteLine($"\t Cars: {group.Cars.Count()}");
+            //    Console.WriteLine($"\t Max: {group.Cars.Max(x => x.Combined)}");
+            //    Console.WriteLine($"\t Max: {group.Cars.Min(x => x.Combined)}");
+            //    Console.WriteLine($"\t Max: {group.Cars.Average(x => x.Combined)}");
+            //    Console.WriteLine();
+            //}
+
+            //var groups = cars
+            //    .GroupBy(x => x.Manufacturer)
+            //    .Select(g => new
+            //    {
+            //        Name = g.Key,
+            //        Max = g.Max(c => c.Combined),
+            //        Min = g.Min(c => c.Combined),
+            //        Average = g.Average(c => c.Combined)
+            //    })
+            //    .OrderBy(x => x.Average);
+
+            //foreach (var group in groups)
+            //{
+            //    Console.WriteLine($"{group.Name}");
+            //    Console.WriteLine($"\t Max: {group.Max}");
+            //    Console.WriteLine($"\t Average: {group.Average}");
+            //}
+
+            //var carsInCountry = cars.Join(
+            //    manufacturers,
+            //    x => x.Manufacturer,
+            //    x => x.Name,
+            //    (car, manufacturer) => new
+            //    {
+            //        manufacturer.Country,
+            //        car.Name,
+            //        car.Combined
+            //    })
+            //    .OrderByDescending(x => x.Combined)
+            //    .ThenBy(x => x.Name);
+
+            //foreach (var car in carsInCountry)
+            //{
+            //    Console.WriteLine($"Country: {car.Country}");
+            //    Console.WriteLine($"\tName: {car.Name}");
+            //    Console.WriteLine($"\tCombined: {car.Combined}");
+            //}
+
+            //var carsInCountry = cars.Join(
+            //    manufacturers,
+            //    c => new { c.Manufacturer, c.Year },
+            //    m => new { Manufacturer = m.Name, m.Year },
+            //    (car, manufacturer) => new
+            //    {
+            //        manufacturer.Country,
+            //        car.Name,
+            //        car.Combined
+            //    })
+            //    .OrderByDescending(x => x.Combined)
+            //    .ThenBy(x => x.Name);
+
+            //foreach (var car in carsInCountry)
+            //{
+            //    Console.WriteLine($"Country: {car.Country}");
+            //    Console.WriteLine($"\tName: {car.Name}");
+            //    Console.WriteLine($"\tCombined: {car.Combined}");
+            //}
+        }
+
+        private void CreateXml()
+        {
+            //var groups = manufacturers.GroupJoin(
+            //    cars,
+            //    manufacturer => manufacturer.Name,
+            //    car => car.Manufacturer,
+            //    (m, c) =>
+            //    new
+            //    {
+            //        Manufacturer = m,
+            //        Cars = c
+            //    })
+            //    .OrderBy(x => x.Manufacturer.Name);
+
+            //foreach(var group in groups)
+            //{
+            //    Console.WriteLine($"Manufacturer: {group.Manufacturer.Name}");
+            //    Console.WriteLine($"\t Cars: {group.Cars.Count()}");
+            //    Console.WriteLine($"\t Max: {group.Cars.Max(x => x.Combined)}");
+            //    Console.WriteLine($"\t Max: {group.Cars.Min(x => x.Combined)}");
+            //    Console.WriteLine($"\t Max: {group.Cars.Average(x => x.Combined)}");
+            //    Console.WriteLine();
+            //}
+
+            //var groups = cars
+            //    .GroupBy(x => x.Manufacturer)
+            //    .Select(g => new
+            //    {
+            //        Name = g.Key,
+            //        Max = g.Max(c => c.Combined),
+            //        Min = g.Min(c => c.Combined),
+            //        Average = g.Average(c => c.Combined)
+            //    })
+            //    .OrderBy(x => x.Average);
+
+            //foreach (var group in groups)
+            //{
+            //    Console.WriteLine($"{group.Name}");
+            //    Console.WriteLine($"\t Max: {group.Max}");
+            //    Console.WriteLine($"\t Average: {group.Average}");
+            //}
+
+            //var carsInCountry = cars.Join(
+            //    manufacturers,
+            //    x => x.Manufacturer,
+            //    x => x.Name,
+            //    (car, manufacturer) => new
+            //    {
+            //        manufacturer.Country,
+            //        car.Name,
+            //        car.Combined
+            //    })
+            //    .OrderByDescending(x => x.Combined)
+            //    .ThenBy(x => x.Name);
+
+            //foreach (var car in carsInCountry)
+            //{
+            //    Console.WriteLine($"Country: {car.Country}");
+            //    Console.WriteLine($"\tName: {car.Name}");
+            //    Console.WriteLine($"\tCombined: {car.Combined}");
+            //}
+
+            //var carsInCountry = cars.Join(
+            //    manufacturers,
+            //    c => new { c.Manufacturer, c.Year },
+            //    m => new { Manufacturer = m.Name, m.Year },
+            //    (car, manufacturer) => new
+            //    {
+            //        manufacturer.Country,
+            //        car.Name,
+            //        car.Combined
+            //    })
+            //    .OrderByDescending(x => x.Combined)
+            //    .ThenBy(x => x.Name);
+
+            //foreach (var car in carsInCountry)
+            //{
+            //    Console.WriteLine($"Country: {car.Country}");
+            //    Console.WriteLine($"\tName: {car.Name}");
+            //    Console.WriteLine($"\tCombined: {car.Combined}");
+            //}
+
+            var records = _csvReader.ProcessCars("Resources\\Files\\fuel.csv");
+            var manufacturers = _csvReader.ProcessManufacturer("Resources\\Files\\manufacturers.csv");
+
+            var document = new XDocument();
+            var cars = new XElement("Cars", records.Select(x =>
+            new XElement("Car",
+            new XAttribute("Name", x.Name),
+            new XAttribute("Combined", x.Combined),
+            new XAttribute("Manufacturer", x.Manufacturer))));
+
+            document.Add(cars);
+            document.Save("fuel.xml");
+        }
+        private void QueryXml()
+        {
+            var document = XDocument.Load("fuel.xml");
+            var names = document
+                .Element("Cars")?
+                .Elements("Car")
+                .Where(x=>x.Attribute("Manufacturer")?.Value == "BMW")
+                .Select(x => x.Attribute("Name")?.Value);
+
+            foreach (var name in names)
             {
-                new Employee {FirstName = "Adam"},
-                new Employee {FirstName = "Piotr"},
-                new Employee {FirstName = "Zuzanna"}
-            };
-
-            foreach (var employee in employees)
-            {
-                _employeeRepository.Add(employee);
-            }
-
-            _employeeRepository.Save();
-
-            var items = _employeeRepository.GetAll();
-            foreach (var item in items)
-            {
-                Console.WriteLine(item);
-            }
-
-            // cars
-            var cars = GenerateSampleCars();
-            foreach (var car in cars)
-            {
-                _carsRepository.Add(car);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("GetUniqueCarColors");
-            foreach (var item in _carsProvider.GetUniqueCarColors())
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("GetMinimumPriceOfAllCars");
-            Console.WriteLine(_carsProvider.GetMinimumPriceOfAllCars());
-
-            Console.WriteLine();
-            Console.WriteLine("GetSpecificComumnsMethod");
-            foreach (var item in _carsProvider.GetSpecificColums())
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("AnonymousClassInString");
-            Console.WriteLine(_carsProvider.AnonymousClass());
-
-            Console.WriteLine();
-            Console.WriteLine("OrderByName");
-            foreach (var item in _carsProvider.OrderByName())
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("OrderByNameDescending");
-            foreach (var item in _carsProvider.OrderByNameDescending())
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("OrderByColorAndName");
-            foreach (var item in _carsProvider.OrderByNameDescending())
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("WhereStartsWith");
-            foreach (var item in _carsProvider.WhereStartsWith("A"))
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("WhereStartsWithAndCostIsGreaterThan");
-            foreach (var item in _carsProvider.WhereStartsWithAndCostIsGreaterThan("F", 1000))
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("WhereColorIs");
-            foreach (var item in _carsProvider.WhereColorIs("Pink"))
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("FirstByColor");
-            Console.WriteLine(_carsProvider.FirstByColor("Pink"));
-
-            Console.WriteLine();
-            Console.WriteLine("FirstOrDefaultByColor");
-            Console.WriteLine(_carsProvider.FirstOrDefaultByColor("Pink"));
-
-            Console.WriteLine();
-            Console.WriteLine("FirstOrDefaultByColorWithDefault");
-            Console.WriteLine(_carsProvider.FirstOrDefaultByColorWithDefault("Pink"));
-
-            Console.WriteLine();
-            Console.WriteLine("LastNyColor");
-            Console.WriteLine(_carsProvider.LastByColor("Pink"));
-
-            Console.WriteLine();
-            Console.WriteLine("SingleById");
-            Console.WriteLine(_carsProvider.SingleById(680));
-
-            Console.WriteLine();
-            Console.WriteLine("SingleOrDefaultById");
-            Console.WriteLine(_carsProvider.SingleOrDefaultById(680));
-
-            Console.WriteLine();
-            Console.WriteLine("TakeCars");
-            foreach (var car in _carsProvider.TakeCars(2))
-            {
-                Console.WriteLine(car);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("TakeCarsRange");
-            foreach (var car in _carsProvider.TakeCars(1..3))
-            {
-                Console.WriteLine(car);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("TakeCarsWhileNameStartsWith");
-            foreach (var car in _carsProvider.TakeCarsWhileNameStartsWith("F"))
-            {
-                Console.WriteLine(car);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("SkipCars");
-            foreach (var item in _carsProvider.SkipCars(4))
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("SkipCarsWhileNameStartsWith");
-            foreach (var item in _carsProvider.SkipCarsWhileNameStartsWith("F"))
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("DistinctAllColors");
-            foreach (var item in _carsProvider.DistinctAllColors())
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("DistinctByColors");
-            foreach (var item in _carsProvider.DistinctByColors())
-            {
-                Console.WriteLine(item);
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("ChunkCars");
-            foreach (var item in _carsProvider.ChunkCars(3))
-            {
-                Console.WriteLine($"Chunk: ");
-                foreach (var i in item)
-                {
-                    Console.WriteLine(i);
-                }
-                Console.WriteLine("####");
-            }
-
-
-            Console.WriteLine();
-            Console.WriteLine("Paging");
-            int pageNumber = 2;
-            int pageSize = 3; // Specify the number of items per page
-
-            var c = _carsProvider.SkipCars((pageNumber - 1) * pageSize).Take(pageSize);
-
-            foreach (var item in c)
-            {
-                Console.WriteLine(item);
+                Console.WriteLine(name);
             }
         }
 

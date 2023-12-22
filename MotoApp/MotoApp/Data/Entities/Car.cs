@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace MotoApp.Entities
+namespace MotoApp.Data.Entities
 {
     public class Car : EntityBase
     {
@@ -21,13 +21,13 @@ namespace MotoApp.Entities
             StringBuilder sb = new(1024);
 
             sb.AppendLine($"{Name} ID: {Id}");
-            sb.AppendLine($"Color: {Color} Type: {(Type ?? "n/a")}");
+            sb.AppendLine($"Color: {Color} Type: {Type ?? "n/a"}");
             sb.AppendLine($"Cost: {StandardCost:c} Price: {ListPrice:c}");
-            if(NameLenght.HasValue)
+            if (NameLenght.HasValue)
             {
                 sb.AppendLine($"Name Lenght: {NameLenght}");
             }
-            if(TotalSales.HasValue)
+            if (TotalSales.HasValue)
             {
                 sb.AppendLine($"Total Sales: {TotalSales:c}");
             }
