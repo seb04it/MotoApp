@@ -1,22 +1,38 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using MotoApp;
 using MotoApp.Components.CsvReader;
-using MotoApp.Components.DataProviders;
+using MotoApp.Data;
 using MotoApp.Data.Entities;
 using MotoApp.Data.Repositories;
+
+// Data Source=DESKTOP-TFF998T\SQLEXPRESS;Initial Catalog=TestStorage;Integrated Security=True
+
+var connectionString = "Data Source=DESKTOP-TFF998T\\SQLEXPRESS;Initial Catalog=MotoAppStorage;Integrated Security=True;TrustServerCertificate=True";
 
 var services = new ServiceCollection();
 services.AddSingleton<IApp, App>();
 services.AddSingleton<IRepository<Employee>, ListRepository<Employee>>();
 services.AddSingleton<IRepository<Car>, ListRepository<Car>>();
-services.AddSingleton<ICarsProvider, CarsProvider>();
 services.AddSingleton<ICsvReader, CsvReader>();
-
-
+services.AddDbContext<MotoAppDbContext>(options => options.UseSqlServer(connectionString));
 
 var serviceProvider = services.BuildServiceProvider();
 var app = serviceProvider.GetService<IApp>()!;
 app.Run();
+
+//var services = new ServiceCollection();
+//services.AddSingleton<IApp, App>();
+//services.AddSingleton<IRepository<Employee>, ListRepository<Employee>>();
+//services.AddSingleton<IRepository<Car>, ListRepository<Car>>();
+//services.AddSingleton<ICsvReader, CsvReader>();
+//services.AddDbContext<MotoAppDbContext>(options => options
+//.UseSqlServer("Data Source=DESKTOP-TFF998T\\SQLEXPRESS;Initial Catalog=MotoAppStorage;Integrated Security=True"));
+
+
+//var serviceProvider = services.BuildServiceProvider();
+//var app = serviceProvider.GetService<IApp>()!;
+//app.Run();
 
 //using MotoApp.Data;
 //using MotoApp.Entities;

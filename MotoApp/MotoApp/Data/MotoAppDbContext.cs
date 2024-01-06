@@ -3,15 +3,17 @@
     using Microsoft.EntityFrameworkCore;
     using MotoApp.Data.Entities;
 
-    public class MotoAppDbContext : Microsoft.EntityFrameworkCore.DbContext
+    public class MotoAppDbContext : DbContext
     {
-        public DbSet<Employee> Employees => Set<Employee>();
-        public DbSet<BuisinessPartners> BuisinessPartners => Set<BuisinessPartners>();
+        public MotoAppDbContext(DbContextOptions<MotoAppDbContext> options) 
+            :base(options)
+        {
+
+        }
+
+        public DbSet<Car> Cars { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseInMemoryDatabase("StorageAppDb");
-        }
+            => optionsBuilder.LogTo(Console.WriteLine);
     }
 }
